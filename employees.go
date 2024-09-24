@@ -125,7 +125,7 @@ func updateEmployee(w http.ResponseWriter, r *http.Request) {
 
 	if len(emp.Groups) != 0 {
 		for i := range emp.Groups {
-			_, err := db.Exec("UPDATE groupmembers SET group_id = $1 WHERE id = $2 AND NOT EXISTS (SELECT * FROM groupmembers WHERE group_id = $1, user_id = $2)", i, userID)
+			_, err := db.Exec("UPDATE groupmembers SET group_id = $1 WHERE id = $2 AND NOT EXISTS (SELECT * FROM groupmembers WHERE group_id = $1 AND user_id = $2)", i, userID)
 			if err != nil {
 				fmt.Println(err.Error())
 				http.Error(w, err.Error(), http.StatusInternalServerError)

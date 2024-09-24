@@ -8,7 +8,6 @@ import (
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 	"net/http"
-	"strings"
 )
 
 func initDB() {
@@ -16,11 +15,21 @@ func initDB() {
 	connStr := "user=postgres password=postgres dbname=factor sslmode=disable"
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
-		fmt.Println(err.Error())
 		panic(err)
 	}
-
-	//fmt.Println(db.Ping())
+	//defer db.Close()
+	//
+	//err = db.Ping()
+	//if err != nil {
+	//	panic(err)
+	//}
+	//var user string
+	//err = db.QueryRow("select current_user").Scan(&user)
+	//if err == nil {
+	//	fmt.Println("User", user)
+	//} else {
+	//	fmt.Println(err.Error())
+	//}
 }
 
 //func checkToken(accsess_token string) (int, error) {
@@ -44,16 +53,31 @@ func initDB() {
 //}
 
 func checkToken(r *http.Request) (int, error) {
-	header := r.Header.Get("Authorization")
-	if header == "" {
-		return 0, errors.New("Invalid header")
+	//header := r.Header.Get("Authorization")
+	h, err := r.Cookie("Bearer")
+	if err != nil {
+		fmt.Println(err.Error())
+		return 0, err
 	}
-	parts := strings.SplitN(header, " ", 2)
-	if len(parts) != 2 || parts[0] != "Bearer" {
-		return 0, errors.New("Invalid header")
-	}
+	fmt.Println(h.Value)
 
-	token, err := jwt.ParseWithClaims(parts[1], &TokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+	t := h.Value
+	//if header == "" {
+	//	return 0, errors.New("Invalid header 1")
+	//}
+	//parts := strings.SplitN(header, " ", 2)
+	//if len(parts) != 2 || parts[0] != "Bearer" {
+	//	return 0, errors.New("Invalid header 2")
+	//}
+	//
+	//token, err := jwt.ParseWithClaims(parts[1], &TokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+	//	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+	//		return nil, errors.New("Invalid signing method")
+	//	}
+	//	return []byte(signingKey), nil
+	//})
+	var tc TokenClaims
+	token, err := jwt.ParseWithClaims(t, &tc, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("Invalid signing method")
 		}
@@ -90,13 +114,20 @@ func startHanding() {
 	router.HandleFunc("/users/{userid}/chats/{GroupID}/{interval}/", getMessages).Methods("GET")
 	router.HandleFunc("/users/{userid}/chats/{GroupID}/", sendMessage).Methods("POST")
 	router.HandleFunc("/users/{userid}/chats/", getChats).Methods("GET")
-	router.HandleFunc("/users/{userid}/tasks/{from_date}/{to_date}", getTasksByUserID).Methods("GET")
-	router.HandleFunc("/users/{userid}/tasks/", createTask).Methods("PUT")
-
+	router.HandleFunc("/groups/", getGroups).Methods("GET")
+	router.HandleFunc("/groups/", createGroup).Methods("POST")
+	router.HandleFunc("/groups/{groupid}/", getGroupByID).Methods("GET")
+	router.HandleFunc("/groups/{groupid}/", updateGroup).Methods("PUT")
+	router.HandleFunc("/groups/{groupid}/", deleteGroup).Methods("DELETE")
+	router.HandleFunc("/groups/{groupid}/members/", getGroupmembers).Methods("GET")
+	router.HandleFunc("/groups/{groupid}/members/{userid}/", updateGroupmember).Methods("PUT")
+	router.HandleFunc("/groups/{groupid}/members/{userid}/", deleteGroupmember).Methods("DELETE")
 	router.HandleFunc("/invites/{link}/", checkInvite).Methods("GET")
+	router.HandleFunc("/register/{link}/", register).Methods("PUT")
 	router.HandleFunc("/login/", login).Methods("POST")
 	//router.HandleFunc("/logout/", logout).Methods("POST")
-	router.HandleFunc("/register/{link}/", register).Methods("PUT")
+	//router.HandleFunc("/users/{userid}/tasks/{from_date}/{to_date}", getTasksByUserID).Methods("GET")
+	//router.HandleFunc("/users/{userid}/tasks/", createTask).Methods("PUT")
 	http.Handle("/", router)
 }
 

@@ -44,6 +44,11 @@ type Task struct {
 	FromUserName string `json:"from_user_name"`
 }
 
+type Groupmember struct {
+	User User   `json:"user"`
+	Role string `json:"role"`
+}
+
 type TokenClaims struct {
 	jwt.StandardClaims
 	UserID int `json:"id"`
@@ -54,5 +59,5 @@ type Token struct {
 }
 
 type Link struct {
-	linkExists bool `json:"link_exists"`
+	LinkExists bool `json:"link_exists"`
 }

@@ -13,17 +13,20 @@ func login(w http.ResponseWriter, r *http.Request) {
 	var user User
 
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	err := db.QueryRow("SELECT id FROM users WHERE login = $1 AND password = $2", user.Login, user.Password).Scan(&user.ID)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	if user.ID == 0 {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), 550)
 		return
 	}
@@ -40,6 +43,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	var signed_token Token
 	signed_token.SignedToken, err = token.SignedString([]byte(signingKey))
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -61,6 +65,7 @@ func logout(w http.ResponseWriter, r *http.Request) {
 func register(w http.ResponseWriter, r *http.Request) {
 	var user User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -74,6 +79,7 @@ func register(w http.ResponseWriter, r *http.Request) {
 
 	_, err := db.Exec("INSERT INTO users (login, password) VALUES ($1, $2)", user.Login, user.Password)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -87,6 +93,7 @@ func checkInvite(w http.ResponseWriter, r *http.Request) {
 	var id string
 	err := db.QueryRow("SELECT id FROM invites WHERE link_text = $1", link).Scan(&id)
 	if err != nil || id == "" {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusNotFound)
 		return
 	}

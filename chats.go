@@ -12,10 +12,12 @@ func isUserInGroup(userID, GroupID string) bool {
 	var v int
 	err := db.QueryRow("SELECT group_id FROM groupmembers WHERE user_id = $1 AND group_id = $2", userID, GroupID).Scan(&v)
 	if err != nil {
+		fmt.Println(err.Error())
 		return false
 	}
 	id, _ := strconv.Atoi(GroupID)
 	if v != id {
+		fmt.Println(err.Error())
 		return false
 	}
 	return true
@@ -27,26 +29,31 @@ func getMessages(w http.ResponseWriter, r *http.Request) {
 	interval := mux.Vars(r)["interval"]
 	id_from_token, err := checkToken(r)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	id_from_request, err := strconv.Atoi(userID)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if id_from_token != id_from_request {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusForbidden)
 		return
 	}
 
 	if !isUserInGroup(userID, groupID) {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusForbidden)
 		return
 	}
 
 	rows, err := db.Query("SELECT message_text, created_at, from_user_id FROM messages WHERE group_id = $1 ORDER BY created_at OFFSET $2 LIMIT 20", groupID, interval)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -56,10 +63,12 @@ func getMessages(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var message Message
 		if err := rows.Scan(&message.MessageText, &message.CreatedAt, &message.FromUserID); err != nil {
+			fmt.Println(err.Error())
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		if err != nil {
+			fmt.Println(err.Error())
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -79,30 +88,36 @@ func sendMessage(w http.ResponseWriter, r *http.Request) {
 
 	id_from_token, err := checkToken(r)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	id_from_request, err := strconv.Atoi(userID)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if id_from_token != id_from_request {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusForbidden)
 		return
 	}
 
 	if !isUserInGroup(userID, groupID) {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusForbidden)
 		return
 	}
 	var message Message
 	if err := json.NewDecoder(r.Body).Decode(&message); err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	_, err = db.Exec("INSERT INTO messages (group_id, from_user_id, created_at, message_text) VALUES ($1, $2, $3, $4)", groupID, userID, message.CreatedAt, message.MessageText)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		fmt.Println("Message wasn't sent,", err.Error())
 		return
@@ -117,15 +132,18 @@ func getChats(w http.ResponseWriter, r *http.Request) {
 
 	id_from_token, err := checkToken(r)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	id_from_request, err := strconv.Atoi(userID)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if id_from_token != id_from_request {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusForbidden)
 		return
 	}
@@ -133,6 +151,7 @@ func getChats(w http.ResponseWriter, r *http.Request) {
 	var groups []Group
 	rows, err := db.Query("SELECT group_id FROM groupmembers WHERE user_id = $1", userID)
 	if err != nil {
+		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -141,6 +160,7 @@ func getChats(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var group Group
 		if err := rows.Scan(&group.ID); err != nil {
+			fmt.Println(err.Error())
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

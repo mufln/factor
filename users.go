@@ -10,8 +10,6 @@ import (
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
 	users := []User{}
-	//rows_users_table, err1 := db.Query("SELECT id, login, rights_level FROM users")
-	//rows_employees_table, err2 := db.Query("SELECT name, profile_pic_path FROM employees")
 	rows, err := db.Query("SELECT u.id,u.login,u.rights_level,e.name,e.profile_pic_path FROM users AS u INNER JOIN employees AS e ON u.id = e.id;")
 	if err != nil {
 		http.Error(w, "error", http.StatusInternalServerError)

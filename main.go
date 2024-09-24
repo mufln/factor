@@ -16,8 +16,11 @@ func initDB() {
 	connStr := "user=postgres password=postgres dbname=factor sslmode=disable"
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
+		fmt.Println(err.Error())
 		panic(err)
 	}
+
+	//fmt.Println(db.Ping())
 }
 
 //func checkToken(accsess_token string) (int, error) {
@@ -57,6 +60,7 @@ func checkToken(r *http.Request) (int, error) {
 		return []byte(signingKey), nil
 	})
 	if err != nil {
+		fmt.Println(err.Error())
 		return 0, err
 	}
 	claims, ok := token.Claims.(*TokenClaims)
@@ -86,8 +90,8 @@ func startHanding() {
 	router.HandleFunc("/users/{userid}/chats/{GroupID}/{interval}/", getMessages).Methods("GET")
 	router.HandleFunc("/users/{userid}/chats/{GroupID}/", sendMessage).Methods("POST")
 	router.HandleFunc("/users/{userid}/chats/", getChats).Methods("GET")
-	//router.HandleFunc("/users/{userid}/tasks/{from_date}/{to_date}", getTasksByUserID).Methods("GET")
-	//router.HandleFunc("/users/{userid}/tasks/", createTask).Methods("PUT")
+	router.HandleFunc("/users/{userid}/tasks/{from_date}/{to_date}", getTasksByUserID).Methods("GET")
+	router.HandleFunc("/users/{userid}/tasks/", createTask).Methods("PUT")
 
 	router.HandleFunc("/invites/{link}/", checkInvite).Methods("GET")
 	router.HandleFunc("/login/", login).Methods("POST")

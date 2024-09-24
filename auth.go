@@ -91,7 +91,11 @@ func checkInvite(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var l Link
+	l.linkExists = true
+
 	fmt.Println("Link exists")
 	w.Header().Set("Content-Type", "application/json")
-	//json.NewEncoder(w).Encode()
+	json.NewEncoder(w).Encode(l)
+	w.WriteHeader(http.StatusOK)
 }

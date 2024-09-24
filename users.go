@@ -10,23 +10,18 @@ import (
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
 	users := []User{}
-	rows_users_table, err1 := db.Query("SELECT id, login FROM users")
-	rows_employees_table, err2 := db.Query("SELECT name, profile_pic_path FROM employees")
-	if err1 != nil || err2 != nil {
+	//rows_users_table, err1 := db.Query("SELECT id, login, rights_level FROM users")
+	//rows_employees_table, err2 := db.Query("SELECT name, profile_pic_path FROM employees")
+	rows, err := db.Query("SELECT u.id,u.login,u.rights_level,e.name,e.profile_pic_path FROM users AS u INNER JOIN employees AS e ON u.id = e.id;")
+	if err != nil {
 		http.Error(w, "error", http.StatusInternalServerError)
 		return
 	}
-	defer rows_users_table.Close()
-	defer rows_employees_table.Close()
+	defer rows.Close()
 
-	for rows_users_table.Next() {
-		rows_employees_table.Next()
+	for rows.Next() {
 		var user User
-		if err := rows_users_table.Scan(&user.ID, &user.Login); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		if err := rows_employees_table.Scan(&user.Name, &user.ProfilePicPath); err != nil {
+		if err := rows.Scan(&user.ID, &user.Login, &user.RightsLevel, &user.Name, &user.ProfilePicPath); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -129,6 +124,7 @@ func getUserByID(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Get user", userID)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user)
+	w.WriteHeader(http.StatusOK)
 }
 
 func deleteUserByID(w http.ResponseWriter, r *http.Request) {

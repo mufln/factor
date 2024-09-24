@@ -92,15 +92,16 @@ func startHanding() {
 	router.HandleFunc("/invites/{link}/", checkInvite).Methods("GET")
 	router.HandleFunc("/login/", login).Methods("POST")
 	//router.HandleFunc("/logout/", logout).Methods("POST")
-	router.HandleFunc("/register/{link}", register).Methods("PUT")
+	router.HandleFunc("/register/{link}/", register).Methods("PUT")
 	http.Handle("/", router)
 }
 
 func main() {
 	initDB()
 	startHanding()
+	fmt.Println("Running on http://localhost:5000/")
 	err := http.ListenAndServe(":5000", nil)
 	if err != nil {
-		fmt.Println("Ошибка запуска сервера:", err)
+		fmt.Println("Ошибка запуска сервера:", err.Error())
 	}
 }

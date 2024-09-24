@@ -36,6 +36,8 @@ type Task struct {
 	ID           int    `json:"id"`
 	IsCompleted  bool   `json:"is_completed"`
 	IsOverdue    bool   `json:"is_overdue"`
+	CreatedAt    int    `json:"created_at"`
+	ExpiredAt    int    `json:"expired_at"`
 	CompletedAt  int    `json:"completed_at"`
 	Text         string `json:"text"`
 	FromUserID   int    `json:"from_user_id"`
@@ -51,6 +53,6 @@ type Token struct {
 	SignedToken string `json:"signed_token"`
 }
 
-//type Link struct {
-//	linkExists bool `json:"link_exists"`
-//}
+type Link struct {
+	linkExists bool `json:"link_exists"`
+}

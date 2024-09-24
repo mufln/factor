@@ -29,6 +29,7 @@ func getEmployees(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Get employees")
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(employees)
+	w.WriteHeader(http.StatusOK)
 }
 
 func getEmployeeByID(w http.ResponseWriter, r *http.Request) {
@@ -74,6 +75,7 @@ func getEmployeeByID(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Get employee", userID)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(emp)
+	w.WriteHeader(http.StatusOK)
 }
 
 // Может быть, объединить эту функцию с updateUser?

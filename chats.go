@@ -70,6 +70,7 @@ func getMessages(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Get messages")
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(messages)
+	w.WriteHeader(http.StatusOK)
 }
 
 func sendMessage(w http.ResponseWriter, r *http.Request) {
@@ -150,4 +151,5 @@ func getChats(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Get chats for", userID)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(groups)
+	w.WriteHeader(http.StatusOK)
 }

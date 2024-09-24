@@ -73,7 +73,7 @@ class Form extends Component {
             required
         />
         {nameError ? (
-                        <div className='error'>Заполните поле</div>
+                        <div className='error'>! Заполните поле</div>
                     ) : null}
         <input 
             value={password}
@@ -85,7 +85,7 @@ class Form extends Component {
             required
         />
         {passwordError ? (
-                        <div className='error'>Заполните поле</div>
+                        <div className='error'>! Заполните поле</div>
                     ) : null}
         <button id="enter" className="enter">Войти</button>
       </form>

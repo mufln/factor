@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@font-face {
+    font-family: "Montserrat";
+    src: local("Montserrat");
+  }
+
+* {
+    font-family: "Montserrat", "Arial";
+    font-size: large;
+}
+
+
+body, html{
+    top: 0;
+    left: 0;
+    height: 100%;
+    min-height: 320px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+body {
+    background-color: rgb(230, 230, 230);
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.sidebar {
+    width: 320px;
+    height: inherit;
+    padding: 40px;
+    box-sizing: border-box;
+}
+.sidebar h1 {
+    color: #01A274;
+    font-size: 32px;
+    margin-bottom: 40px;
+    font-weight: 900;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+.sidebar ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.sidebar ul li i svg{
+    margin-right: 10px;
+    height: 20px;
+    width: 20px;
+}
+.sidebar ul li a {
+    text-decoration: none;
+    color: #000;
+}
+.content {
+    height: inherit;
+    flex-grow: 1;
+    background-color: white;
+    border-radius: 50px 0px 0px 0px;
+    padding: 40px;
+    box-sizing: border-box;
+}
+.content h2 {
+    font-weight: 900;
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+.content .show-completed {
+    color: #01A274;
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+.content .show-completed input {
+    margin-right: 10px;
+}
+.content .task-date {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+.content .tasks{
+    padding: 0 40px;
+}
+.content .task-item {
+    align-items: center;
+    margin-top: 10px;
+}
+input[type="checkbox"] {
+    accent-color: #01A274;
+  }
+
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    transform: none;
+  }
+  
+  
+.content .task-item input {
+    margin-right: 10px;
+    height: 20px;
+    width: 20px;
+}
+.content .task-item .text-info{
+    display: flex;
+    flex-direction: column;
+}
+.content .task-item .task-title {
+    font-size: 18px;
+    white-space: nowrap;
+}
+.content .task-item .task-author {
+    font-size: 14px;
+    color: #888;
+}

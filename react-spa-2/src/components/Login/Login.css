@@ -61,8 +61,15 @@ h1 {
     font-weight: 900;
 }
 
-a{
+.signin{
+    display: flex;
+    flex-direction: row;
+}
+
+.register-href{
     color:#01A274;
+    text-decoration: underline;
+    margin-left: 5px;
 }
 
 .error{

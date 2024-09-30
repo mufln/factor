@@ -1,6 +1,7 @@
 import React from 'react';
 import './Login.css';
 import Form from './Form'
+import { Link } from 'react-router-dom';
 
 function Login(){
     return (
@@ -16,9 +17,7 @@ function Login(){
       <Form></Form>
       <div className="signin">
         У Вас ещё нет учётной записи? 
-        <div className='register-href'>
-          Регистрация
-        </div>   
+        <Link className='register-href' to="/register">Регистрация</Link>  
       </div>
     </div> 
     );

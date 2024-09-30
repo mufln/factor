@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './index.css';
+import './Register.css';
 
 class Form extends Component {
     state = {
@@ -109,7 +109,7 @@ class Form extends Component {
         {passwordError ? (
                         <div className='error'>! Заполните поле</div>
                     ) : null}
-        <button id="enter" className="enter">Войти</button>
+        <button id="enter" className="enter">Зарегистрироваться</button>
       </form>
     );   
 }

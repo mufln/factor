@@ -14,7 +14,7 @@ func getGroups(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ID from token:", id_from_token)
 	if err != nil {
 		fmt.Println("Token invalid,", err.Error())
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 	var user_id string
@@ -62,7 +62,7 @@ func createGroup(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ID from token:", id_from_token)
 	if err != nil {
 		fmt.Println("Token invalid,", err.Error())
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 	var user_id string
@@ -88,7 +88,7 @@ func getGroupByID(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ID from token:", id_from_token)
 	if err != nil {
 		fmt.Println("Token invalid,", err.Error())
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 	var user_id string
@@ -131,7 +131,7 @@ func updateGroup(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ID from token:", id_from_token)
 	if err != nil {
 		fmt.Println("Token invalid,", err.Error())
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 	var user_id string
@@ -197,7 +197,7 @@ func deleteGroup(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("ID from token:", id_from_token)
 	if err != nil {
 		fmt.Println("Token invalid,", err.Error())
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 	var user_id string

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
@@ -13,17 +14,24 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query("SELECT u.id,u.login,u.rights_level,e.name,e.profile_pic_path FROM users AS u INNER JOIN employees AS e ON u.id = e.id;")
 	if err != nil {
 		fmt.Println(err.Error())
-		http.Error(w, "error", http.StatusInternalServerError)
+		http.Error(w, "Unable to scan rows", http.StatusInternalServerError)
 		return
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		var user User
-		if err := rows.Scan(&user.ID, &user.Login, &user.RightsLevel, &user.Name, &user.ProfilePicPath); err != nil {
-			fmt.Println(err.Error())
+		var u [4]sql.NullString
+		err = rows.Scan(&user.ID, &u[0], &u[1], &u[2], &u[3])
+		if err != nil {
+			fmt.Println("Unable to scan values from row", err.Error())
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
+		}
+		var list []*string = []*string{&user.Login, &user.RightsLevel, &user.Name, &user.ProfilePicPath}
+
+		for i := 0; i < 4; i++ {
+			*list[i] = u[i].String
 		}
 		users = append(users, user)
 	}

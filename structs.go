@@ -42,6 +42,7 @@ type Task struct {
 	Text         string `json:"text"`
 	FromUserID   int    `json:"from_user_id"`
 	FromUserName string `json:"from_user_name"`
+	ToUserId     int    `json:"to_user_id"`
 }
 
 type Groupmember struct {

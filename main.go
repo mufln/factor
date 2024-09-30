@@ -15,80 +15,34 @@ func initDB() {
 	connStr := "user=postgres password=postgres dbname=factor sslmode=disable"
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
+		fmt.Println("Error during connecting db: ", err.Error())
 		panic(err)
 	}
-	//defer db.Close()
-	//
-	//err = db.Ping()
-	//if err != nil {
-	//	panic(err)
-	//}
-	//var user string
-	//err = db.QueryRow("select current_user").Scan(&user)
-	//if err == nil {
-	//	fmt.Println("User", user)
-	//} else {
-	//	fmt.Println(err.Error())
-	//}
 }
 
-//func checkToken(accsess_token string) (int, error) {
-//	token, err := jwt.ParseWithClaims(accsess_token, &TokenClaims{}, func(token *jwt.Token) (interface{}, error) {
-//		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-//			return nil, errors.New("Invalid signing method")
-//		}
-//		return []byte(signingKey), nil
-//	})
-//
-//	if err != nil {
-//		return 0, err
-//	}
-//
-//	claims, ok := token.Claims.(*TokenClaims)
-//	if !ok {
-//		return 0, errors.New("token claims are not of type *TokenClaims")
-//	}
-//
-//	return claims.UserID, nil
-//}
-
 func checkToken(r *http.Request) (int, error) {
-	//header := r.Header.Get("Authorization")
 	h, err := r.Cookie("Bearer")
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("No bearer in cookie,", err.Error())
 		return 0, err
 	}
-	fmt.Println(h.Value)
 
 	t := h.Value
-	//if header == "" {
-	//	return 0, errors.New("Invalid header 1")
-	//}
-	//parts := strings.SplitN(header, " ", 2)
-	//if len(parts) != 2 || parts[0] != "Bearer" {
-	//	return 0, errors.New("Invalid header 2")
-	//}
-	//
-	//token, err := jwt.ParseWithClaims(parts[1], &TokenClaims{}, func(token *jwt.Token) (interface{}, error) {
-	//	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-	//		return nil, errors.New("Invalid signing method")
-	//	}
-	//	return []byte(signingKey), nil
-	//})
 	var tc TokenClaims
 	token, err := jwt.ParseWithClaims(t, &tc, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			fmt.Println("Unable to parse token,", err.Error())
 			return nil, errors.New("Invalid signing method")
 		}
 		return []byte(signingKey), nil
 	})
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("Unable to parse token,", err.Error())
 		return 0, err
 	}
 	claims, ok := token.Claims.(*TokenClaims)
 	if !ok {
+		fmt.Println("token claims are not of type *TokenClaims")
 		return 0, errors.New("token claims are not of type *TokenClaims")
 	}
 
@@ -122,6 +76,9 @@ func startHanding() {
 	router.HandleFunc("/groups/{groupid}/members/", getGroupmembers).Methods("GET")
 	router.HandleFunc("/groups/{groupid}/members/{userid}/", updateGroupmember).Methods("PUT")
 	router.HandleFunc("/groups/{groupid}/members/{userid}/", deleteGroupmember).Methods("DELETE")
+	router.HandleFunc("/users/{userid}/tasks/{from_date}/{to_date}/", getTasksByUserID).Methods("GET")
+	router.HandleFunc("/users/{userid}/tasks/", editTask).Methods("PUT")
+	router.HandleFunc("/users/{userid}/tasks/", deleteTask).Methods("DELETE")
 	router.HandleFunc("/invites/{link}/", checkInvite).Methods("GET")
 	router.HandleFunc("/register/{link}/", register).Methods("PUT")
 	router.HandleFunc("/login/", login).Methods("POST")

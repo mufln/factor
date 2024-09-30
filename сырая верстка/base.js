@@ -21,7 +21,7 @@ function hexToRgb(hex) {
     const b = parseInt(hex.substring(5, 7), 16);
     return { r, g, b };
 }
-
+/*
 const vueApp = Vue.createApp({
     el: '#app',
     setup() {
@@ -35,7 +35,9 @@ const vueApp = Vue.createApp({
     },
 });
 vueApp.mount('#app');
-/*
+*/
+$('#app').load('index.html');
+
 $("#tasks-button").on('click', (function() {
     $('#content').load('task.html');
 }))
@@ -56,4 +58,4 @@ $("#teams-button").on('click', (function() {
 
 $("#new-team").on('click', (function() {
     $('#app').load('task.html');
-}))*/
+}))

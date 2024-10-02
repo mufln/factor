@@ -50,18 +50,7 @@ class Form extends Component {
                 repeatpasswordError: false
             });
             console.log(name, password, repeatpassword);
-            var xhr = new XMLHttpRequest();
-            var url = "http://localhost:5000/login/";
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log("Success");
-                }
-            };
-            var data = JSON.stringify({"login": name, "password": password});
-            xhr.send(data);
-
+            fetch("http://127.0.0.1:5000/login/",{credentials:'include',method:'POST',body:`{"login":"User", "password":"12345"}`})
             return;
         }
 

@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    /*background: linear-gradient(70deg, #016146, #057D5B);*/
+    background-color: black;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.title {
+    font-size: 90px;
+    font-weight: 900;
+}
+.subtitle {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+.button-wrapper{
+    padding: 3px;
+    background-color: white;
+    max-width: max-content;
+    max-height: max-content;
+    background-image: linear-gradient(to right, #22c55e, #14b8a6);
+    border-radius: 50px;
+    pointer-events: none;
+    margin: 50px;
+    margin-bottom: 200px;
+}
+.button {
+    padding: 15px 30px;
+    font-size: 18px;
+    color: white;
+    background-color: black;
+    border-radius: 50px;
+    text-decoration: none;
+    width: max-content;
+    pointer-events: auto;
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: -90deg;
+    inherits: false;
+}
+  
+@keyframes rotate {
+    0% {
+      --angle: -90deg;
+    }
+    100% {
+      --angle: 270deg;
+    }
+}
+.button-wrapper{
+    background-image: linear-gradient(var(--angle), #009537, #06b6d4);
+}
+.button-wrapper:hover {
+    animation: rotate 3s linear infinite;
+}
+
+.button i {
+    margin-left: 10px;
+}
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.card {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 20px;
+    width: 150px;
+    text-align: center;
+}
+.card i {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+.card p {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+}

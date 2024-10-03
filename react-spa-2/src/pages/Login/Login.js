@@ -1,9 +1,20 @@
 import React from 'react';
-import './Login.css';
-import Form from './Form'
-import { Link } from 'react-router-dom';
+import '../../styles/SLogin.scss';
+import LoginForm from './LoginForm'
+import RegisterForm from './RegisterForm'
+// import { Link } from 'react-router-dom';
 
-function Login(){
+class Login extends React.Component{
+  state = {
+    loginOpen: true
+  };
+  renderRegister = () => {
+    this.setState({loginOpen: false});
+  }
+  renderLogin = () => {
+    this.setState({loginOpen: true});
+  }
+  render() {
     return (
     <div className="login-wrapper">
       <div className="logo">
@@ -13,14 +24,25 @@ function Login(){
           </svg>
         <h1>Фактор</h1>
       </div>
-      <h2>Авторизация</h2>
-      <Form></Form>
-      <div className="signin">
-        У Вас ещё нет учётной записи? 
-        <Link className='register-href' to="/register">Регистрация</Link>  
-      </div>
+      {this.state.loginOpen ? 
+        <h2>Авторизация</h2> :
+        <h2>Регистрация</h2>}
+      {this.state.loginOpen ? 
+        <LoginForm></LoginForm> : 
+        <RegisterForm></RegisterForm>}
+      {this.state.loginOpen ?
+        <div className="signin">
+          Нет учётной записи? 
+          <button className='register-href' onClick={() => this.renderRegister()}>Регистрация</button>
+        </div> :
+        <div className="signin">
+          У Вас уже есть аккаунт? 
+          <button className='register-href' onClick={() => this.renderLogin()}>Войти</button>
+        </div>
+         }
     </div> 
     );
+  }
 }
 
 export default Login;

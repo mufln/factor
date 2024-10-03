@@ -6,11 +6,19 @@
     font-size: large;
 }
 
+$primary-color:  #01A274;
+
+.base-container{
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
 body, html, #root, .App {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  @extend .base-container;
     background-color: white;
     padding: 0;
     margin: 0;
@@ -51,7 +59,7 @@ body, html, #root, .App {
 }
 
 h1 {
-    color: #01A274;
+    color: $primary-color;
     font-size: 32px;
     margin-bottom: 40px;
     font-weight: 900;
@@ -63,7 +71,7 @@ h1 {
 }
 
 .register-href{
-    color:#01A274;
+    color: $primary-color;
     text-decoration: underline;
     background-color: transparent;
     border: none;
@@ -87,6 +95,7 @@ h1 {
     font-size: small;
     width: inherit;
     min-height: 30px;
+    text-decoration: none;
 }
 
 input{
@@ -96,7 +105,7 @@ input{
     border-color: gray;
     color: gray;
     padding: 5px 10px;
-    outline-color: #01A274;
+    outline-color:  $primary-color;
 }
 
 .pin {
@@ -116,14 +125,19 @@ input{
 }
 
 .enter{
-    font-size: medium;
+    font-size: large;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     font-weight: 700;
-    border-radius: 20px;
+    border-radius: 30px;
     margin: 10px 0px;
-    padding: 10px 10px;
-    background-color: #01A274;
+    background-color:  $primary-color;
     border: none;
     color: white;
+    text-align: center;
 }
 
 .enter:hover, label:hover{
@@ -143,22 +157,12 @@ input{
     text-decoration: none;
 }
 
-.base{
-    top: 0;
-    left: 0;
-    height: 100%;
-    min-height: 320px;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-}
-
 .base {
     background-color: rgb(230, 230, 230);
-    margin: 0;
-    padding: 0;
+    @extend .base-container;
     display: flex;
-    flex-direction: row;
+    min-height: 320px;
+    overflow: hidden;
 }
 
 .sidebar {
@@ -168,7 +172,7 @@ input{
     box-sizing: border-box;
 }
 .sidebar h1 {
-    color: #01A274;
+    color:  $primary-color;
     font-size: 32px;
     margin-bottom: 40px;
     font-weight: 900;
@@ -223,7 +227,7 @@ input{
     padding: 10px 20px;
     margin: 0 20px;
     border-radius: 30px;
-    background-color: #01A274;
+    background-color:  $primary-color;
     color: white;
     border: none;
     font-weight: 500;
@@ -234,7 +238,7 @@ input{
     opacity: 0.7;
 }    
 .content .show-completed {
-    color: #01A274;
+    color:  $primary-color;
     font-size: 18px;
     margin-bottom: 20px;
     display: flex;
@@ -256,7 +260,7 @@ input{
     margin-top: 10px;
 }
 input[type="checkbox"] {
-    accent-color: #01A274;
+    accent-color:  $primary-color;
   }
 
   input[type="checkbox"] {
@@ -307,7 +311,7 @@ input[type="checkbox"] {
 .team-card .team-avatar{
     width: stretch;
     height: 140px;
-    /* background-color: #01A274;*/
+    /* background-color:  $primary-color;*/
     border-radius: 20px;
     margin-bottom: 20px;
 }
